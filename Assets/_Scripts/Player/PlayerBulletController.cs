@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerBulletController : MonoBehaviour
 {
-    public float Speed { get; set; }
     private float lifeTime = 1.0f;
     private Rigidbody _rb;
     private TrailRenderer _trailRenderer;
@@ -32,6 +31,10 @@ public class PlayerBulletController : MonoBehaviour
         _rb.velocity = Vector3.zero;
         //회전속도도 초기화
         _rb.angularVelocity = Vector3.zero;
+
+
+        if (GameManager._instance.CurrentGameState == GameManager.GameState.CLEAR)
+            speed = 50f;
         _rb.AddForce(transform.forward * speed);
         lifeTime = 1.0f;
     }
