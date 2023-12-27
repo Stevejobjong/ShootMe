@@ -17,7 +17,6 @@ public class PlayerInputController : MonoBehaviour
     private float _rotY;
     private float _sensitivity = 10f;
     private float _clampAngle = 70f;
-    private float bulletSpeed = 1000f;
 
     public LayerMask BulletLayer;
     private bool _isHit;
@@ -33,8 +32,12 @@ public class PlayerInputController : MonoBehaviour
 
     private void Update()
     {
-        if (_currentTarget == null)
+        if (_currentTarget == null || _currentTarget.gameObject.activeSelf == false)
             ScanNearBy();
+
+        if (!_playerInput.isActiveAndEnabled && GameManager._instance.CurrentGameState == GameState.PLAY)
+            _playerInput.enabled = true;
+
     }
     #endregion
 
@@ -57,9 +60,11 @@ public class PlayerInputController : MonoBehaviour
         if (_isHit)
         {
             _playerInput.enabled = false;
-            GameManager._instance.ClearStage();
+            GameManager._instance.StateHit();
+            _currentTarget.ResetBullet();
         }
-        BulletManager._instance.ShootBullet(_muzzle.position, _muzzle.rotation, bulletSpeed);
+
+        GameManager._instance.ShootBullet(_muzzle.position, _muzzle.rotation);
     }
 
     private void ScanNearBy()
@@ -74,7 +79,7 @@ public class PlayerInputController : MonoBehaviour
         {
             float distance = Vector3.Distance(transform.position, nearbyTargets[i].transform.position);
 
-            if (distance < closestDistance)      //closestAngle보다 작은각도면 그 타겟 저장, closetAngle 갱신
+            if (distance < closestDistance)
             {
                 closestTarget = nearbyTargets[i].transform;
                 closestDistance = distance;
@@ -83,7 +88,8 @@ public class PlayerInputController : MonoBehaviour
         _currentTarget = closestTarget.GetComponent<EnemyBullet>();
         _currentTarget.TurnOnCam();
     }
-        void OnDrawGizmos()
+
+    void OnDrawGizmos()
     {
 
         Gizmos.DrawWireSphere(transform.position, 5f);
@@ -103,5 +109,9 @@ public class PlayerInputController : MonoBehaviour
         {
             Gizmos.DrawRay(_muzzle.position, _muzzle.forward * maxDistance);
         }
+    }
+    public Vector3 GetTargetPos()
+    {
+        return _currentTarget.transform.position;
     }
 }

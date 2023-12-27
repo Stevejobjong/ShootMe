@@ -3,48 +3,79 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class EnemyBullet : MonoBehaviour
+public class EnemyBullet : Bullet
 {
-    [SerializeField] private Transform body;
-    [SerializeField] private GameObject cam;
-    private Rigidbody _rb;
-    private float speed = 10f;
+    [SerializeField] private Transform _body;
+    [SerializeField] private GameObject _cam;
+    private Transform _targetTransform;
+    private bool iscolldier = false;
+
     private void Awake()
     {
-        _rb = GetComponent<Rigidbody>();
+        _speed = 10f;
         TurnOffCam();
+    }
+    private void OnEnable()
+    {
+        iscolldier = false;
+        ResetBullet();
     }
     private void Start()
     {
-        _rb.AddForce(transform.forward * speed);
+        SetTarget();
     }
     private void Update()
     {
-        if(GameManager._instance.CurrentGameState == GameManager.GameState.CLEAR)
-        {
-            _rb.velocity = Vector3.zero;
-        }
-        body.Rotate(new Vector3(20f * Time.deltaTime, 0, 0));
+        _body.Rotate(new Vector3(20f * Time.deltaTime, 0, 0));
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player")){
+        if (collision.gameObject.CompareTag("Player"))
+        {
             print("게임 오버");
         }
         else
         {
-            print("클리어");
-            _rb.AddForce(collision.transform.position -  body.position);
+            if (!iscolldier)
+            {
+                print("충돌");
+                iscolldier = true;
+                StartCoroutine(CoNextBullet(collision.gameObject));
+            }
         }
     }
-
+    //public void 
     public void TurnOnCam()
     {
-        cam.SetActive(true);
+        _cam.SetActive(true);
     }
     public void TurnOffCam()
     {
-        cam.SetActive(false);
+        _cam.SetActive(false);
+    }
+
+    public override void ResetBullet()
+    {
+        base.ResetBullet();
+        if (GameManager._instance != null && GameManager._instance.CurrentGameState == GameState.HIT)
+            _speed = 0f;
+        else
+            _speed = 10f;
+        SetTarget();
+    }
+
+    public void SetTarget()
+    {
+        _targetTransform = GameManager._instance.Player.transform;
+        transform.LookAt(_targetTransform.position + new Vector3(0, 1.5f, 0));
+        _rb.AddForce(transform.forward * _speed);
+    }
+    IEnumerator CoNextBullet(GameObject go)
+    {
+        yield return new WaitForSeconds(3f);
+        go.SetActive(false);
+        gameObject.SetActive(false);
+        GameManager._instance.SpawnEnemy();
     }
 }

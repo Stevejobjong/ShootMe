@@ -35,7 +35,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7565396614759745513
 MeshFilter:
@@ -126,6 +126,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d00de7b275347bd4187b0e2bbec81f55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rb: {fileID: 1237705091348766004}
+  _speed: 0
+  _trailRenderer: {fileID: 1850127701893918860}
 --- !u!96 &1850127701893918860
 TrailRenderer:
   serializedVersion: 3
@@ -259,6 +262,6 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.00005
-  m_Height: 0.001
+  m_Height: 0.0005
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0.0001}

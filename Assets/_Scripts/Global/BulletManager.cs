@@ -4,19 +4,17 @@ using UnityEngine;
 
 public class BulletManager : MonoBehaviour
 {
-    public static BulletManager _instance;
     private ObjectPool _objectPool;
-    private void Awake()
+    private void Start()
     {
-        _instance = this;
-        _objectPool = GetComponent<ObjectPool>();
+        _objectPool = GameManager._instance.ObjectPool.GetComponent<ObjectPool>();
     }
-    public void ShootBullet(Vector3 startPostiion, Quaternion startRotation,float speed)
+    public void ShootBullet(Vector3 startPostiion, Quaternion startRotation)
     {
         GameObject obj = _objectPool.SpawnFromPool("PlayerBullet");
         obj.transform.position = startPostiion;
         obj.transform.rotation = startRotation;
-        obj.GetComponent<PlayerBulletController>().ResetBullet(speed);
+        obj.GetComponent<PlayerBullet>().ResetBullet();
         obj.SetActive(true);
     }
 }
