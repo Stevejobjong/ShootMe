@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -7,7 +8,8 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private Image _fadeImage;
-
+    [SerializeField] private GameObject _endPanel;
+    public TMP_Text scoreText;
     public void DoFadeOut()
     {
         StartCoroutine(CoFadeOut());
@@ -36,5 +38,14 @@ public class UIManager : MonoBehaviour
             _fadeImage.color = c;
             yield return null;
         }
+    }
+    public void SetScore(int score)
+    {
+        scoreText.text = score.ToString();
+    }
+
+    public void ActivateEndPanel()
+    {
+        _endPanel.SetActive(true);
     }
 }

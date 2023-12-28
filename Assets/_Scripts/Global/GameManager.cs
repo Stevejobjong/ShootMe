@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum GameState { PLAY, HIT, GAMEOVER };
 public class GameManager : MonoBehaviour
@@ -13,7 +14,7 @@ public class GameManager : MonoBehaviour
     [field: SerializeField] public GameObject Player { get; private set; }
     [field: SerializeField] public ObjectPool ObjectPool { get; private set; }
 
-
+    public int score {  get; private set; }
     public GameState CurrentGameState { get; private set; }
     private void Awake()
     {
@@ -29,6 +30,10 @@ public class GameManager : MonoBehaviour
     public void ShootBullet(Vector3 startPostiion, Quaternion startRotation)
     {
         BulletManager.ShootBullet(startPostiion, startRotation);
+        score -= 10;
+        score = Mathf.Max(score, 0);
+        if(UIManager != null)
+            UIManager.SetScore(score);
     }
 
     public void SpawnEnemy()
@@ -38,6 +43,8 @@ public class GameManager : MonoBehaviour
 
     public void StateHit()
     {
+        score += 100;
+        UIManager.SetScore(score);
         CurrentGameState = GameState.HIT;
     }
 
@@ -48,7 +55,8 @@ public class GameManager : MonoBehaviour
     public void StateGameOver()
     {
         CurrentGameState = GameState.GAMEOVER;
-        
+        UIManager.Invoke("ActivateEndPanel", 1f);
+        StartCoroutine(CoLoadScene());
     }
     public void FadeOut()
     {
@@ -57,5 +65,10 @@ public class GameManager : MonoBehaviour
     public void FadeIn()
     {
         UIManager.DoFadeIn();
+    }
+    IEnumerator CoLoadScene()
+    {
+        yield return new WaitForSeconds(3f);
+        SceneManager.LoadScene("StartScene");
     }
 }

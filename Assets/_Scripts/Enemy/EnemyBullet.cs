@@ -13,7 +13,7 @@ public class EnemyBullet : Bullet
     private void Awake()
     {
         _speed = 10f;
-        TurnOffCam();
+        //TurnOffCam();
     }
     private void OnEnable()
     {
@@ -43,6 +43,7 @@ public class EnemyBullet : Bullet
             {
                 print("충돌");
                 GameManager._instance.StateHit();
+                ResetBullet();
                 iscolldier = true;
                 StartCoroutine(CoNextBullet(collision.gameObject));
             }

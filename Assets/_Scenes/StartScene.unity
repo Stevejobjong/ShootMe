@@ -874,6 +874,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <BulletManager>k__BackingField: {fileID: 1607209320}
   <EnemySpawnManager>k__BackingField: {fileID: 0}
+  <UIManager>k__BackingField: {fileID: 0}
   <Player>k__BackingField: {fileID: 1918692456}
   <ObjectPool>k__BackingField: {fileID: 1387506134}
 --- !u!4 &408367098
@@ -1329,7 +1330,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _start: {fileID: 108253696}
   _exit: {fileID: 108199868}
-  fadeImage: {fileID: 1066106517}
+  _fadeImage: {fileID: 1066106517}
 --- !u!4 &1048713436
 Transform:
   m_ObjectHideFlags: 0
@@ -1701,7 +1702,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.01
   far clip plane: 1000
   field of view: 60
   orthographic: 0
@@ -2146,6 +2147,7 @@ MonoBehaviour:
   _playerSpine: {fileID: 1414994014}
   _muzzle: {fileID: 627084703}
   _bullet: {fileID: 6894664622713933816, guid: 446d4eb2f9361614dae9bf0576c9e514, type: 3}
+  _animator: {fileID: 0}
   BulletLayer:
     serializedVersion: 2
     m_Bits: 64
