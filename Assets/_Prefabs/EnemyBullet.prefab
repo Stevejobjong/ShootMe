@@ -12,13 +12,14 @@ GameObject:
   - component: {fileID: 8858165358776583452}
   - component: {fileID: 9011817058649541892}
   - component: {fileID: 5392139392043450555}
+  - component: {fileID: 6506219309026987057}
   m_Layer: 6
   m_Name: EnemyBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1908659888017332767
 Transform:
   m_ObjectHideFlags: 0
@@ -53,7 +54,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.2, y: 0.2, z: 0.5}
   m_Center: {x: 0, y: 0, z: 0.27}
@@ -72,7 +73,7 @@ MonoBehaviour:
   _rb: {fileID: 5392139392043450555}
   _speed: 0
   _body: {fileID: 4068217846126163194}
-  _cam: {fileID: 5980761667134973480}
+  _mesh: {fileID: 6717657316687285387}
 --- !u!54 &5392139392043450555
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -100,6 +101,29 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!136 &6506219309026987057
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4537865640892237798}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.06
+  m_Height: 0.2
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: 0.45}
 --- !u!1 &5980761667134973480
 GameObject:
   m_ObjectHideFlags: 0

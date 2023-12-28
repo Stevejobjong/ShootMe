@@ -3,12 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GameState { PLAY, HIT, CLEAR };
+public enum GameState { PLAY, HIT, GAMEOVER };
 public class GameManager : MonoBehaviour
 {
     public static GameManager _instance;
     [field: SerializeField] public BulletManager BulletManager { get; private set; }
     [field: SerializeField] public EnemySpawnManager EnemySpawnManager { get; private set; }
+    [field: SerializeField] public UIManager UIManager { get; private set; }
     [field: SerializeField] public GameObject Player { get; private set; }
     [field: SerializeField] public ObjectPool ObjectPool { get; private set; }
 
@@ -21,11 +22,8 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
-        SpawnEnemy();
-    }
-    public void ClearStage()
-    {
-        CurrentGameState = GameState.CLEAR;
+        if(EnemySpawnManager != null)
+            Invoke("SpawnEnemy", 1f);
     }
 
     public void ShootBullet(Vector3 startPostiion, Quaternion startRotation)
@@ -46,5 +44,18 @@ public class GameManager : MonoBehaviour
     public void StatePlay()
     {
         CurrentGameState = GameState.PLAY;
+    }
+    public void StateGameOver()
+    {
+        CurrentGameState = GameState.GAMEOVER;
+        
+    }
+    public void FadeOut()
+    {
+        UIManager.DoFadeOut();
+    }
+    public void FadeIn()
+    {
+        UIManager.DoFadeIn();
     }
 }

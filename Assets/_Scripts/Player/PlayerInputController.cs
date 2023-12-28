@@ -9,7 +9,9 @@ public class PlayerInputController : MonoBehaviour
     [SerializeField] private Transform _playerSpine;
     [SerializeField] private Transform _muzzle;
     [SerializeField] private GameObject _bullet;
+    [SerializeField] private Animator _animator;
 
+    private GameManager _gameManager;
     private EnemyBullet _currentTarget;
     private PlayerInput _playerInput;
     private Transform _playerTransform;
@@ -20,6 +22,7 @@ public class PlayerInputController : MonoBehaviour
 
     public LayerMask BulletLayer;
     private bool _isHit;
+    private bool _isGameOver = false;
     #endregion
 
     #region MonoBehaviours
@@ -29,14 +32,29 @@ public class PlayerInputController : MonoBehaviour
         _playerTransform = gameObject.GetComponent<Transform>();
         Cursor.lockState = CursorLockMode.Locked;
     }
-
+    private void Start()
+    {
+        _gameManager = GameManager._instance;
+    }
     private void Update()
     {
+
         if (_currentTarget == null || _currentTarget.gameObject.activeSelf == false)
             ScanNearBy();
 
-        if (!_playerInput.isActiveAndEnabled && GameManager._instance.CurrentGameState == GameState.PLAY)
+        if (_gameManager.CurrentGameState == GameState.PLAY)
             _playerInput.enabled = true;
+        else
+        {
+            _playerInput.enabled = false;
+            if (!_isGameOver &&_gameManager.CurrentGameState == GameState.GAMEOVER)
+            {
+                transform.LookAt(Vector3.Scale(_currentTarget.transform.position, new Vector3(1, 0, 1)));
+                _isGameOver = true;
+                _animator.enabled = true;
+                _animator.SetTrigger("Death");
+            }
+        }
 
     }
     #endregion
@@ -57,7 +75,7 @@ public class PlayerInputController : MonoBehaviour
 
     public void OnFire(InputValue value)
     {
-        if (_isHit)
+        if (_isHit|| GameManager._instance.CurrentGameState == GameState.HIT)
         {
             _playerInput.enabled = false;
             GameManager._instance.StateHit();
@@ -109,9 +127,5 @@ public class PlayerInputController : MonoBehaviour
         {
             Gizmos.DrawRay(_muzzle.position, _muzzle.forward * maxDistance);
         }
-    }
-    public Vector3 GetTargetPos()
-    {
-        return _currentTarget.transform.position;
     }
 }

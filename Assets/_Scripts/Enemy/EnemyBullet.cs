@@ -6,7 +6,7 @@ using UnityEngine;
 public class EnemyBullet : Bullet
 {
     [SerializeField] private Transform _body;
-    [SerializeField] private GameObject _cam;
+    [SerializeField] private GameObject _mesh;
     private Transform _targetTransform;
     private bool iscolldier = false;
 
@@ -18,6 +18,7 @@ public class EnemyBullet : Bullet
     private void OnEnable()
     {
         iscolldier = false;
+        StopAllCoroutines();
         ResetBullet();
     }
     private void Start()
@@ -33,13 +34,15 @@ public class EnemyBullet : Bullet
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            print("게임 오버");
+            GameManager._instance.StateGameOver();
+            _mesh.gameObject.SetActive(false);
         }
         else
         {
             if (!iscolldier)
             {
                 print("충돌");
+                GameManager._instance.StateHit();
                 iscolldier = true;
                 StartCoroutine(CoNextBullet(collision.gameObject));
             }
@@ -48,11 +51,13 @@ public class EnemyBullet : Bullet
     //public void 
     public void TurnOnCam()
     {
-        _cam.SetActive(true);
+        //_cam.SetActive(true);
+        GameManager._instance.FadeIn();
     }
     public void TurnOffCam()
     {
-        _cam.SetActive(false);
+        //_cam.SetActive(false);
+        GameManager._instance.FadeOut();
     }
 
     public override void ResetBullet()

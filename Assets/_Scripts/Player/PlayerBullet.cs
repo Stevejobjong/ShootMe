@@ -25,10 +25,7 @@ public class PlayerBullet : Bullet
         _trailRenderer.Clear();
 
         if (GameManager._instance != null && GameManager._instance.CurrentGameState == GameState.HIT)
-        {
             _speed = 50f;
-            gameObject.transform.LookAt(GameManager._instance.Player.GetComponent<PlayerInputController>().GetTargetPos());
-        }
         else
             _speed = 1000f;
         _rb.AddForce(transform.forward * _speed);
