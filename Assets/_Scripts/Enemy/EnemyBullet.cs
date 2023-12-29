@@ -8,18 +8,20 @@ public class EnemyBullet : Bullet
     [SerializeField] private Transform _body;
     [SerializeField] private GameObject _mesh;
     private Transform _targetTransform;
+
+    //중복 충돌을 방지
     private bool iscolldier = false;
 
     private void Awake()
     {
-        _speed = 10f;
-        //TurnOffCam();
+        _speed = StartSceneManager.EnemyBulletSpeed;
     }
     private void OnEnable()
     {
         iscolldier = false;
         StopAllCoroutines();
         ResetBullet();
+        TurnOnCam();
     }
     private void Start()
     {
@@ -41,7 +43,6 @@ public class EnemyBullet : Bullet
         {
             if (!iscolldier)
             {
-                print("충돌");
                 GameManager._instance.StateHit();
                 ResetBullet();
                 iscolldier = true;
@@ -49,15 +50,12 @@ public class EnemyBullet : Bullet
             }
         }
     }
-    //public void 
     public void TurnOnCam()
     {
-        //_cam.SetActive(true);
         GameManager._instance.FadeIn();
     }
     public void TurnOffCam()
     {
-        //_cam.SetActive(false);
         GameManager._instance.FadeOut();
     }
 
@@ -67,7 +65,7 @@ public class EnemyBullet : Bullet
         if (GameManager._instance != null && GameManager._instance.CurrentGameState == GameState.HIT)
             _speed = 0f;
         else
-            _speed = 10f;
+            _speed = StartSceneManager.EnemyBulletSpeed;
         SetTarget();
     }
 
@@ -79,7 +77,9 @@ public class EnemyBullet : Bullet
     }
     IEnumerator CoNextBullet(GameObject go)
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1f);
+        TurnOffCam();
+        yield return new WaitForSeconds(2f);
         go.SetActive(false);
         gameObject.SetActive(false);
         GameManager._instance.SpawnEnemy();

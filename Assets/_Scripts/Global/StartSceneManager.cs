@@ -6,17 +6,30 @@ using UnityEngine.UI;
 
 public class StartSceneManager : MonoBehaviour
 {
-    [SerializeField] private Rigidbody _start;
+    public static float EnemyBulletSpeed = 0;
+    [SerializeField] private Rigidbody _easyStart;
+    [SerializeField] private Rigidbody _hardStart;
     [SerializeField] private Rigidbody _exit;
     [SerializeField] private Image _fadeImage;
     private bool _isSelect = false;
     private void Update()
     {
-        if(!_isSelect && _start.velocity.magnitude!=0)
+        if (_isSelect)
+            return;
+
+        if(_easyStart.velocity.magnitude!=0)
         {
             _isSelect = true;
+            EnemyBulletSpeed = 10f;
             StartCoroutine(CoLoadScene());
-        }else if(!_isSelect && _exit.velocity.magnitude!=0)
+        }
+        else if (_hardStart.velocity.magnitude != 0)
+        {
+            _isSelect = true;
+            EnemyBulletSpeed = 50f;
+            StartCoroutine(CoLoadScene());
+        }
+        else if(_exit.velocity.magnitude!=0)
         {
             _isSelect = true;
             Application.Quit();

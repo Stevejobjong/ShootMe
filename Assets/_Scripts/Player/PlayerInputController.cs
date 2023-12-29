@@ -8,7 +8,6 @@ public class PlayerInputController : MonoBehaviour
     #region Fields
     [SerializeField] private Transform _playerSpine;
     [SerializeField] private Transform _muzzle;
-    [SerializeField] private GameObject _bullet;
     [SerializeField] private Animator _animator;
 
     private GameManager _gameManager;
@@ -38,6 +37,7 @@ public class PlayerInputController : MonoBehaviour
     }
     private void Update()
     {
+        HitCheck();
 
         if (_currentTarget == null || _currentTarget.gameObject.activeSelf == false)
             ScanNearBy();
@@ -59,7 +59,7 @@ public class PlayerInputController : MonoBehaviour
     }
     #endregion
 
-    //마우스 이동시 호출되는 함수
+
     public void OnLook(InputValue value)
     {
         Vector2 newAim = value.Get<Vector2>();
@@ -107,15 +107,14 @@ public class PlayerInputController : MonoBehaviour
         _currentTarget.TurnOnCam();
     }
 
-    void OnDrawGizmos()
+
+    //OnDrawGizmos 빌드시 호출되지 않음..
+    private void OnDrawGizmos()
     {
 
         Gizmos.DrawWireSphere(transform.position, 5f);
 
-        float maxDistance = 100;
-        RaycastHit hit;
-        _isHit = Physics.SphereCast(_muzzle.position, 0.02f, _muzzle.forward, out hit, maxDistance, BulletLayer);
-
+        RaycastHit hit = HitCheck();
         Gizmos.color = Color.red;
 
         if (_isHit)
@@ -125,7 +124,15 @@ public class PlayerInputController : MonoBehaviour
         }
         else
         {
-            Gizmos.DrawRay(_muzzle.position, _muzzle.forward * maxDistance);
+            Gizmos.DrawRay(_muzzle.position, _muzzle.forward * 100);
         }
     }
+    private RaycastHit HitCheck()
+    {
+        float maxDistance = 100;
+        RaycastHit hit;
+        _isHit = Physics.SphereCast(_muzzle.position, 0.02f, _muzzle.forward, out hit, maxDistance, BulletLayer);
+        return hit;
+    }
+
 }

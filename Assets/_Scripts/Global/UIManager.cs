@@ -12,11 +12,13 @@ public class UIManager : MonoBehaviour
     public TMP_Text scoreText;
     public void DoFadeOut()
     {
+        StopAllCoroutines();
         StartCoroutine(CoFadeOut());
     }
 
     public void DoFadeIn()
     {
+        StopAllCoroutines();
         StartCoroutine(CoFadeIn());
     }
     IEnumerator CoFadeOut()
