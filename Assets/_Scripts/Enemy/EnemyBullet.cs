@@ -15,6 +15,8 @@ public class EnemyBullet : Bullet
     private void Awake()
     {
         _speed = StartSceneManager.EnemyBulletSpeed;
+        if (_speed != 10 || _speed != 50)
+            Debug.LogWarning("StartScene에서 시작해주세요.");
     }
     private void OnEnable()
     {
