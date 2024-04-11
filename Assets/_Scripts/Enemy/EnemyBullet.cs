@@ -15,7 +15,7 @@ public class EnemyBullet : Bullet
     private void Awake()
     {
         _speed = StartSceneManager.EnemyBulletSpeed;
-        if (_speed != 10 || _speed != 50)
+        if (_speed != 10 || _speed != 100)
             Debug.LogWarning("StartScene에서 시작해주세요.");
     }
     private void OnEnable()
@@ -27,7 +27,7 @@ public class EnemyBullet : Bullet
     }
     private void Start()
     {
-        SetTarget();
+        //SetTarget();
     }
     private void Update()
     {
@@ -75,7 +75,8 @@ public class EnemyBullet : Bullet
     {
         _targetTransform = GameManager._instance.Player.transform;
         transform.LookAt(_targetTransform.position + new Vector3(0, 1.5f, 0));
-        _rb.AddForce(transform.forward * _speed);
+        Debug.Log(_speed);
+        _rb.AddForce(transform.forward.normalized * _speed);
     }
     IEnumerator CoNextBullet(GameObject go)
     {

@@ -26,7 +26,7 @@ public class StartSceneManager : MonoBehaviour
         else if (_hardStart.velocity.magnitude != 0)
         {
             _isSelect = true;
-            EnemyBulletSpeed = 50f;
+            EnemyBulletSpeed = 100f;
             StartCoroutine(CoLoadScene());
         }
         else if(_exit.velocity.magnitude!=0)
